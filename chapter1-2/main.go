@@ -11,6 +11,8 @@ import (
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
+	printRequestDetails(r)
+
 	dump, err := httputil.DumpRequest(r, true)
 	if err != nil {
 		http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
@@ -18,6 +20,14 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Println(string(dump))
 	fmt.Fprintf(w, "<html><body>hello</body></html>\n")
+}
+
+func printRequestDetails(r *http.Request) {
+	pp.Printf("URL: %s\n", r.URL.String())
+	pp.Printf("Query: %v\n", r.URL.Query())
+	pp.Printf("Proto: %s\n", r.Proto)
+	pp.Printf("Method: %s\n", r.Method)
+	pp.Printf("Header: %v\n", r.Header)
 }
 
 func cookieHandler(w http.ResponseWriter, r *http.Request) {
@@ -30,6 +40,8 @@ func cookieHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleDigest(w http.ResponseWriter, r *http.Request) {
+	printRequestDetails(r)
+
 	// A1 = user:Secret Zone:pass
 	// A2 = GET:/digest
 	// MD5(A1) = f82a7cabef5eec42b8fa827fd3c86db7
@@ -39,11 +51,7 @@ func handleDigest(w http.ResponseWriter, r *http.Request) {
 	// A3 = Md5(A1):nonce:nc:cnonce:qop:Md5(A2)
 	//    = f82a7cabef5eec42b8fa827fd3c86db7:TgLc25U2BQA=f510a27804 73e18e6587be702c2e67fe2b04afd:00000001:NjU2MGZkYTM3MzNkNTRhZmVmNWNkNzk2ZTMwOTg4YmE=:auth:72c5182fbc56def0cfe368cd32b37c29
 	// response = MD5(A3)
-	pp.Printf("URL: %s\n", r.URL.String())
-	pp.Printf("Query: %v\n", r.URL.Query())
-	pp.Printf("Proto: %s\n", r.Proto)
-	pp.Printf("Method: %s\n", r.Method)
-	pp.Printf("Header: %v\n", r.Header)
+
 	defer r.Body.Close()
 	body, _ := ioutil.ReadAll(r.Body)
 	fmt.Printf("--body--\n%s\n", string(body))
