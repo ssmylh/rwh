@@ -1,4 +1,10 @@
 test.txt
 cookie.txt
 
+ca.key
+ca.srl
+ca.crt
+server.key
+server.crt
+
 simpleget
