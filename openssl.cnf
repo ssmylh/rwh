@@ -29,7 +29,8 @@ challengePassword		= A challenge password
 challengePassword_min		= 4
 challengePassword_max		= 20
 
-[CA] basicConstraints=critical,CA:TRUE,pathlen:0
+[CA]
+basicConstraints=critical,CA:TRUE,pathlen:0
 keyUsage=digitalSignature,keyCertSign,cRLSign
 
 [Server]
