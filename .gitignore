@@ -12,4 +12,6 @@ client.key
 client.csr
 client.crt
 
+access_token.json
+
 simpleget
